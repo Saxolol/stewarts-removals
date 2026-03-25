@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Modern Website</title>
+<title>Stewarts Removals</title>
 
 <!-- Icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -12,7 +12,6 @@
 :root {
     --sidebar-width: 240px;
 
-    /* Light theme */
     --bg: #f4f6f8;
     --text: #222;
     --primary: #2c3e50;
@@ -20,7 +19,7 @@
     --card: #ffffff;
 }
 
-/* Dark theme */
+/* Dark mode */
 body.dark {
     --bg: #1e1e1e;
     --text: #f1f1f1;
@@ -29,7 +28,6 @@ body.dark {
     --card: #2a2a2a;
 }
 
-/* Reset */
 * {
     margin: 0;
     padding: 0;
@@ -41,6 +39,14 @@ body {
     display: flex;
     background: var(--bg);
     color: var(--text);
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+/* Layout wrapper to push footer down */
+.wrapper {
+    display: flex;
+    flex: 1;
 }
 
 /* Sidebar */
@@ -51,7 +57,6 @@ body {
     height: 100vh;
     position: fixed;
     transition: transform 0.3s ease;
-    z-index: 1000;
     padding: 20px 15px;
 }
 
@@ -71,9 +76,16 @@ body {
     font-weight: bold;
 }
 
+/* Sidebar title */
+.sidebar .brand {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+/* Nav */
 .sidebar ul {
     list-style: none;
-    margin-top: 40px;
 }
 
 .sidebar li {
@@ -89,7 +101,7 @@ body {
     margin-right: 10px;
 }
 
-/* Contact bubble */
+/* Contact */
 .contact {
     margin-top: 30px;
     background: #ffffff15;
@@ -102,7 +114,9 @@ body {
 .main {
     margin-left: var(--sidebar-width);
     width: 100%;
-    transition: margin-left 0.3s;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 .main.full {
@@ -110,10 +124,34 @@ body {
 }
 
 /* Header */
+.header {
+    position: relative;
+    height: 220px;
+}
+
 .header img {
     width: 100%;
-    height: 220px;
+    height: 100%;
     object-fit: cover;
+}
+
+/* Overlay text */
+.header .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header .overlay h1 {
+    color: white;
+    font-size: 36px;
+    letter-spacing: 2px;
 }
 
 /* Carousel */
@@ -156,12 +194,12 @@ body {
     line-height: 1.6;
 }
 
-/* Footer */
+/* Footer pushed to bottom */
 .footer {
     background: var(--primary);
     color: white;
     padding: 20px;
-    margin-top: 20px;
+    margin-top: auto;
 }
 
 .footer .social a {
@@ -190,9 +228,13 @@ body {
 
 <body>
 
+<div class="wrapper">
+
 <!-- Sidebar -->
 <div class="sidebar" id="sidebar">
     <div class="toggle-btn" onclick="toggleSidebar()" id="toggleBtn"><</div>
+
+    <div class="brand">Stewarts Removals</div>
 
     <ul>
         <li><a href="page2.html"><i class="fas fa-file"></i>Page 2</a></li>
@@ -203,11 +245,11 @@ body {
 
     <div class="contact">
         <h3>Contact Us</h3>
-        <p>John Doe Ltd.</p>
-        <p>123 Elm Street</p>
-        <p>London, UK</p>
-        <p>+44 7700 900123</p>
-        <p>contact@example.com</p>
+        <p>Stewart Removals Ltd.</p>
+        <p>45 Highland Road</p>
+        <p>Glasgow, UK</p>
+        <p>+44 141 555 7890</p>
+        <p>info@stewartsremovals.co.uk</p>
     </div>
 </div>
 
@@ -217,6 +259,9 @@ body {
     <!-- Header -->
     <div class="header">
         <img src="https://picsum.photos/1200/300" alt="Header">
+        <div class="overlay">
+            <h1>Stewarts Removals</h1>
+        </div>
     </div>
 
     <!-- Carousel -->
@@ -239,11 +284,12 @@ body {
         <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
         <p>Duis aute irure dolor in reprehenderit in voluptate velit esse.</p>
         <p>Excepteur sint occaecat cupidatat non proident.</p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
     </div>
 
     <!-- Footer -->
     <div class="footer">
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio.</p>
 
         <div class="social">
             <a href="#"><i class="fab fa-facebook"></i> Facebook</a>
@@ -264,6 +310,8 @@ body {
 
 </div>
 
+</div>
+
 <script>
 /* Sidebar */
 const sidebar = document.getElementById("sidebar");
@@ -280,7 +328,6 @@ function toggleSidebar() {
     toggleBtn.innerHTML = collapsed ? ">" : "<";
 }
 
-/* Load sidebar state */
 const collapsed = localStorage.getItem("sidebarCollapsed") === "true";
 if (collapsed) {
     sidebar.classList.add("collapsed");
@@ -288,7 +335,7 @@ if (collapsed) {
     toggleBtn.innerHTML = ">";
 }
 
-/* Carousel */
+/* Carousel (infinite loop) */
 let index = 0;
 const slides = document.getElementById("slides");
 const totalSlides = 5;
@@ -315,7 +362,6 @@ function applyTheme(theme) {
     } else if (theme === "light") {
         document.body.classList.remove("dark");
     } else {
-        // system
         const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
         document.body.classList.toggle("dark", prefersDark);
     }
@@ -326,12 +372,10 @@ function changeTheme(theme) {
     applyTheme(theme);
 }
 
-/* Load theme */
 const savedTheme = localStorage.getItem("theme") || "system";
 document.getElementById("themeSelect").value = savedTheme;
 applyTheme(savedTheme);
 
-/* Listen for system changes */
 window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
     if ((localStorage.getItem("theme") || "system") === "system") {
         applyTheme("system");
