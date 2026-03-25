@@ -1,1 +1,13 @@
-
+<!-- logo.svg -->
+<svg width="300" height="80" viewBox="0 0 300 80" xmlns="http://www.w3.org/2000/svg">
+  <rect width="300" height="80" rx="12" fill="#1e90ff"/>
+  <text x="90" y="45" font-size="20" fill="white" font-family="Arial" font-weight="bold">
+    Stewart's
+  </text>
+  <text x="90" y="65" font-size="14" fill="white" font-family="Arial">
+    Removals
+  </text>
+  <rect x="15" y="25" width="60" height="25" rx="5" fill="white"/>
+  <circle cx="30" cy="55" r="6" fill="white"/>
+  <circle cx="60" cy="55" r="6" fill="white"/>
+</svg>
