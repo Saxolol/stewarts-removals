@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Stewarts Removals</title>
 
-<!-- Icons -->
+<!-- Font Awesome for icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
@@ -19,7 +19,6 @@
     --card: #ffffff;
 }
 
-/* Dark mode */
 body.dark {
     --bg: #1e1e1e;
     --text: #f1f1f1;
@@ -43,7 +42,7 @@ body {
     flex-direction: column;
 }
 
-/* Layout wrapper to push footer down */
+/* Layout wrapper */
 .wrapper {
     display: flex;
     flex: 1;
@@ -58,6 +57,7 @@ body {
     position: fixed;
     transition: transform 0.3s ease;
     padding: 20px 15px;
+    z-index: 1001; /* ensure on top of header */
 }
 
 .sidebar.collapsed {
@@ -74,6 +74,7 @@ body {
     cursor: pointer;
     border-radius: 0 5px 5px 0;
     font-weight: bold;
+    z-index: 1010;
 }
 
 /* Sidebar title */
@@ -83,7 +84,7 @@ body {
     margin-bottom: 20px;
 }
 
-/* Nav */
+/* Nav links */
 .sidebar ul {
     list-style: none;
 }
@@ -101,7 +102,7 @@ body {
     margin-right: 10px;
 }
 
-/* Contact */
+/* Contact bubble */
 .contact {
     margin-top: 30px;
     background: #ffffff15;
@@ -126,7 +127,8 @@ body {
 /* Header */
 .header {
     position: relative;
-    height: 220px;
+    height: 150px; /* smaller banner */
+    margin-bottom: 20px;
 }
 
 .header img {
@@ -135,14 +137,14 @@ body {
     object-fit: cover;
 }
 
-/* Overlay text */
+/* Banner overlay text */
 .header .overlay {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,0.4);
+    background: rgba(0,0,0,0.3);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -150,8 +152,8 @@ body {
 
 .header .overlay h1 {
     color: white;
-    font-size: 36px;
-    letter-spacing: 2px;
+    font-size: 28px;
+    letter-spacing: 1px;
 }
 
 /* Carousel */
@@ -183,6 +185,7 @@ body {
     font-size: 24px;
     padding: 10px;
     cursor: pointer;
+    z-index: 10;
 }
 
 .left { left: 10px; }
@@ -194,7 +197,7 @@ body {
     line-height: 1.6;
 }
 
-/* Footer pushed to bottom */
+/* Footer */
 .footer {
     background: var(--primary);
     color: white;
@@ -313,7 +316,7 @@ body {
 </div>
 
 <script>
-/* Sidebar */
+/* Sidebar toggle */
 const sidebar = document.getElementById("sidebar");
 const main = document.getElementById("main");
 const toggleBtn = document.getElementById("toggleBtn");
@@ -322,49 +325,37 @@ function toggleSidebar() {
     sidebar.classList.toggle("collapsed");
     main.classList.toggle("full");
 
-    const collapsed = sidebar.classList.contains("collapsed");
-    localStorage.setItem("sidebarCollapsed", collapsed);
-
-    toggleBtn.innerHTML = collapsed ? ">" : "<";
+    localStorage.setItem("sidebarCollapsed", sidebar.classList.contains("collapsed"));
+    toggleBtn.innerHTML = sidebar.classList.contains("collapsed") ? ">" : "<";
 }
 
-const collapsed = localStorage.getItem("sidebarCollapsed") === "true";
-if (collapsed) {
+/* Load sidebar state */
+if (localStorage.getItem("sidebarCollapsed") === "true") {
     sidebar.classList.add("collapsed");
     main.classList.add("full");
     toggleBtn.innerHTML = ">";
 }
 
-/* Carousel (infinite loop) */
+/* Carousel */
 let index = 0;
 const slides = document.getElementById("slides");
-const totalSlides = 5;
+const totalSlides = slides.children.length;
 
 function showSlide(i) {
-    index = (i + totalSlides) % totalSlides;
+    index = (i + totalSlides) % totalSlides; // loop correctly
     slides.style.transform = `translateX(-${index * 100}%)`;
 }
 
-function nextSlide() {
-    showSlide(index + 1);
-}
-
-function prevSlide() {
-    showSlide(index - 1);
-}
+function nextSlide() { showSlide(index + 1); }
+function prevSlide() { showSlide(index - 1); }
 
 setInterval(nextSlide, 15000);
 
-/* Theme */
+/* Dark mode */
 function applyTheme(theme) {
-    if (theme === "dark") {
-        document.body.classList.add("dark");
-    } else if (theme === "light") {
-        document.body.classList.remove("dark");
-    } else {
-        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-        document.body.classList.toggle("dark", prefersDark);
-    }
+    if (theme === "dark") document.body.classList.add("dark");
+    else if (theme === "light") document.body.classList.remove("dark");
+    else document.body.classList.toggle("dark", window.matchMedia("(prefers-color-scheme: dark)").matches);
 }
 
 function changeTheme(theme) {
@@ -377,9 +368,7 @@ document.getElementById("themeSelect").value = savedTheme;
 applyTheme(savedTheme);
 
 window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
-    if ((localStorage.getItem("theme") || "system") === "system") {
-        applyTheme("system");
-    }
+    if ((localStorage.getItem("theme") || "system") === "system") applyTheme("system");
 });
 </script>
 
